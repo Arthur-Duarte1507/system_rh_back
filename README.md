@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Sistema RH Backend
 
 Backend de um sistema de RH desenvolvido com FastAPI + PostgreSQL para integração com aplicação Flutter.
@@ -171,6 +170,3 @@ final response = await http.get(
 - Necessário possuir Python instalado
 - Necessário possuir PostgreSQL instalado
 - Banco configurado em `banco.py`
-=======
-# system_rh_back
->>>>>>> 0369acd26f7bbd6d356f6e09b9fe337775b9130f

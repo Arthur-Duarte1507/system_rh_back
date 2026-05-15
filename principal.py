@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from banco import Base, engine
 
@@ -20,6 +21,19 @@ app = FastAPI(
     title="API RH",
     description="Sistema de RH para aplicativo Flutter",
     version="1.0"
+)
+
+origens_permitidas = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080"
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origens_permitidas,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 
