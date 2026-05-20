@@ -47,6 +47,8 @@ class CriarFuncionarioRequisicao(BaseModel):
     email: str
     senha: str
     cargo: str
+    tempo_casa: str
+    aniversario: str
 
 
 class AlterarFuncionarioRequisicao(BaseModel):

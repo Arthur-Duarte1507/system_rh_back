@@ -25,7 +25,9 @@ def criar_funcionario(
     nome: str,
     email: str,
     senha: str,
-    cargo: str
+    cargo: str,
+    tempo_casa: str,
+    aniversario: str
 ):
 
     funcionario = Funcionario(
@@ -52,7 +54,6 @@ def buscar_funcionario_por_email(
     return banco.query(Funcionario).filter(
         Funcionario.email == email
     ).first()
-
 
 
 def alterar_funcionario(

@@ -86,7 +86,9 @@ def cadastrar_funcionario(
         dados.nome,
         dados.email,
         dados.senha,
-        dados.cargo
+        dados.cargo,
+        dados.tempo_casa,
+        dados.aniversario
     )
 
     return {
@@ -96,7 +98,9 @@ def cadastrar_funcionario(
             "nome": funcionario.nome,
             "email": funcionario.email,
             "cargo": funcionario.cargo,
-            "estado_trabalho": funcionario.estado_trabalho
+            "estado_trabalho": funcionario.estado_trabalho,
+            "tempo_casa": funcionario.tempo_casa,
+            "aniversario": funcionario.aniversario
         }
     }
 

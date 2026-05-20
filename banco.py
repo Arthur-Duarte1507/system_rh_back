@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
 
-URL_BANCO = "postgresql://postgres:123456@localhost:5432/rh_api"
+URL_BANCO = "postgresql://postgres:1234@localhost:5432/rh_api"
 
 
 engine = create_engine(URL_BANCO)
