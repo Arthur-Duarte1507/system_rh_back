@@ -60,6 +60,7 @@ def buscar_funcionario_por_email(
     ).first()
 
 
+
 def alterar_funcionario(
     banco: Session,
     funcionario: Funcionario,

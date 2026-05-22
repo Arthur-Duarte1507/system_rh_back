@@ -18,7 +18,6 @@ class FuncionarioResposta(BaseModel):
 
 class BaterPontoRequisicao(BaseModel):
     funcionario_id: int
-    tipo: str
 
 
 class AjustePontoRequisicao(BaseModel):

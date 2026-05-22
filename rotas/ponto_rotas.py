@@ -1,10 +1,19 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy import func
+from datetime import date
 
 from banco import pegar_banco
 
 from esquemas import (
     BaterPontoRequisicao
+)
+
+from repositorios import funcionario_repositorio
+
+from modelos import (
+    RegistroPonto,
+    Funcionario
 )
 
 from repositorios.ponto_repositorio import (
@@ -27,10 +36,40 @@ def bater_ponto(
     banco: Session = Depends(pegar_banco)
 ):
 
+    tipo_ponto = "Entrada"
+
+    quantidade_registros = banco.query(RegistroPonto).filter(
+        RegistroPonto.funcionario_id == dados.funcionario_id,
+        func.date(RegistroPonto.data_hora) == date.today()
+    ).count()
+
+    if quantidade_registros % 2 != 0:
+        tipo_ponto = "Saida"
+
+    print(quantidade_registros)
+
     registro = registrar_ponto(
         banco,
         dados.funcionario_id,
-        dados.tipo
+        tipo_ponto
+    )
+
+    vfuncionario=funcionario_repositorio.buscar_funcionario_por_id(
+            banco=banco,
+            funcionario_id=dados.funcionario_id
+        )
+    
+    vestado_trabalho = "Trabalhando" if tipo_ponto == "Entrada" else "Ausente"
+    
+    funcionario_repositorio.alterar_funcionario(
+        banco=banco,
+        funcionario=vfuncionario,
+        nome=vfuncionario.nome,
+        email=vfuncionario.email,
+        cargo=vfuncionario.cargo,
+        tempo_casa=vfuncionario.tempo_casa,
+        aniversario=vfuncionario.aniversario,
+        estado_trabalho= vestado_trabalho
     )
 
     return {
@@ -38,8 +77,8 @@ def bater_ponto(
         "registro": {
             "id": registro.id,
             "funcionario_id": registro.funcionario_id,
-            "tipo": registro.tipo,
-            "data_hora": registro.data_hora
+            "data_hora": registro.data_hora,
+            "tipo": tipo_ponto
         }
     }
 

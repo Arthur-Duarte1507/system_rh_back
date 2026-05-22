@@ -99,9 +99,7 @@ def cadastrar_funcionario(
             "nome": funcionario.nome,
             "email": funcionario.email,
             "cargo": funcionario.cargo,
-            "estado_trabalho": funcionario.estado_trabalho,
-            "tempo_casa": funcionario.tempo_casa,
-            "aniversario": funcionario.aniversario
+            "estado_trabalho": funcionario.estado_trabalho
         }
     }
 
