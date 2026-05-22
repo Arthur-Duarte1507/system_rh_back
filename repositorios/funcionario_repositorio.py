@@ -27,20 +27,24 @@ def criar_funcionario(
     senha: str,
     cargo: str,
     tempo_casa: str,
-    aniversario: str
+    aniversario: str,
+    estado_trabalho: str
 ):
 
     funcionario = Funcionario(
         nome=nome,
         email=email,
         senha=senha,
-        cargo=cargo
+        cargo=cargo,
+        tempo_casa=tempo_casa,
+        aniversario=aniversario,
+
+        # usa o valor enviado pelo Flutter
+        estado_trabalho=estado_trabalho or "nao_comecou"
     )
 
     banco.add(funcionario)
-
     banco.commit()
-
     banco.refresh(funcionario)
 
     return funcionario

@@ -49,6 +49,7 @@ class CriarFuncionarioRequisicao(BaseModel):
     cargo: str
     tempo_casa: str
     aniversario: str
+    estado_trabalho: str | None = None
 
 
 class AlterarFuncionarioRequisicao(BaseModel):

@@ -88,7 +88,8 @@ def cadastrar_funcionario(
         dados.senha,
         dados.cargo,
         dados.tempo_casa,
-        dados.aniversario
+        dados.aniversario,
+        dados.estado_trabalho
     )
 
     return {

@@ -23,6 +23,7 @@ router = APIRouter(
 @router.post("/bater")
 def bater_ponto(
     dados: BaterPontoRequisicao,
+
     banco: Session = Depends(pegar_banco)
 ):
 
