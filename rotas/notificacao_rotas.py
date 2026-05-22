@@ -9,7 +9,6 @@ from repositorios.notificacao_repositorio import (
     criar_notificacao,
     listar_notificacoes,
     buscar_notificacao_por_id,
-    marcar_como_lida,
     deletar_notificacao
 )
 
@@ -30,7 +29,8 @@ def nova_notificacao(
         banco,
         dados.funcionario_id,
         dados.titulo,
-        dados.mensagem
+        dados.mensagem,
+        dados.data,
     )
 
     return {
@@ -39,7 +39,7 @@ def nova_notificacao(
             "id": notificacao.id,
             "titulo": notificacao.titulo,
             "mensagem": notificacao.mensagem,
-            "lida": notificacao.lida
+            "data": notificacao.data
         }
     }
 
@@ -62,41 +62,10 @@ def buscar_notificacoes(
             "funcionario_id": notificacao.funcionario_id,
             "titulo": notificacao.titulo,
             "mensagem": notificacao.mensagem,
-            "lida": notificacao.lida
+            "data": notificacao.data
         })
 
     return lista
-
-
-@router.put("/{id}/lida")
-def ler_notificacao(
-    id: int,
-    banco: Session = Depends(pegar_banco)
-):
-
-    notificacao = buscar_notificacao_por_id(
-        banco,
-        id
-    )
-
-    if notificacao is None:
-
-        return {
-            "erro": "Notificação não encontrada"
-        }
-
-    notificacao = marcar_como_lida(
-        banco,
-        notificacao
-    )
-
-    return {
-        "mensagem": "Notificação marcada como lida",
-        "notificacao": {
-            "id": notificacao.id,
-            "lida": notificacao.lida
-        }
-    }
 
 
 @router.delete("/{id}")

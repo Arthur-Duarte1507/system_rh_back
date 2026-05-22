@@ -132,7 +132,6 @@ GET /api/chat/conversas/{id}/mensagens
 ```text
 POST /api/notificacoes
 GET /api/notificacoes
-PUT /api/notificacoes/{id}/lida
 DELETE /api/notificacoes/{id}
 ```
 

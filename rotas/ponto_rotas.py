@@ -121,31 +121,31 @@ def status_ponto(
     if ultimo_ponto is None:
 
         return {
-            "estado": "nao_comecou"
+            "estado": "nao comecou"
         }
 
     if ultimo_ponto.tipo == "entrada":
 
         return {
-            "estado": "trabalhando"
+            "estado": "Trabalhando"
         }
 
     if ultimo_ponto.tipo == "saida":
 
         return {
-            "estado": "saida"
+            "estado": "Saida"
         }
 
     if ultimo_ponto.tipo == "falta":
 
         return {
-            "estado": "falta"
+            "estado": "Falta"
         }
 
     if ultimo_ponto.tipo == "ferias":
 
         return {
-            "estado": "ferias"
+            "estado": "Ferias"
         }
 
     return {

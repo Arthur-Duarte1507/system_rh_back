@@ -7,13 +7,15 @@ def criar_notificacao(
     banco: Session,
     funcionario_id: int,
     titulo: str,
-    mensagem: str
+    mensagem: str,
+    data: str
 ):
 
     notificacao = Notificacao(
         funcionario_id=funcionario_id,
         titulo=titulo,
-        mensagem=mensagem
+        mensagem=mensagem,
+        data=data
     )
 
     banco.add(notificacao)
@@ -40,20 +42,6 @@ def buscar_notificacao_por_id(
     return banco.query(Notificacao).filter(
         Notificacao.id == notificacao_id
     ).first()
-
-
-def marcar_como_lida(
-    banco: Session,
-    notificacao: Notificacao
-):
-
-    notificacao.lida = True
-
-    banco.commit()
-
-    banco.refresh(notificacao)
-
-    return notificacao
 
 def deletar_notificacao(
     banco: Session,

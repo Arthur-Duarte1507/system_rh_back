@@ -52,7 +52,7 @@ def dashboard(
                 "id": notificacao.id,
                 "titulo": notificacao.titulo,
                 "mensagem": notificacao.mensagem,
-                "lida": notificacao.lida
+                "data": notificacao.data
             })
 
     return {

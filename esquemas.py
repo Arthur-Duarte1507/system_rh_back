@@ -68,3 +68,4 @@ class NotificacaoRequisicao(BaseModel):
     funcionario_id: int
     titulo: str
     mensagem: str
+    data: str
