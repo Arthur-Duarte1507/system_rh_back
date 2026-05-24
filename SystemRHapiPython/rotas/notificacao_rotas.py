@@ -9,7 +9,8 @@ from repositorios.notificacao_repositorio import (
     criar_notificacao,
     listar_notificacoes,
     buscar_notificacao_por_id,
-    deletar_notificacao
+    deletar_notificacao,
+    atualizar_notificacao
 )
 
 
@@ -92,4 +93,41 @@ def remover_notificacao(
 
     return {
         "mensagem": "Notificação removida"
+    }
+
+@router.put("/atualizar/{id}")
+def atualizar_notificacao_endpoint(
+    id: int,
+    dados: NotificacaoRequisicao,
+    banco: Session = Depends(pegar_banco)
+):
+
+    notificacao = buscar_notificacao_por_id(
+        banco,
+        id
+    )
+
+    if notificacao is None:
+
+        return {
+            "erro": "Notificação não encontrada"
+        }
+
+    notificacao_atualizada = atualizar_notificacao(
+        banco,
+        notificacao,
+        dados.funcionario_id,
+        dados.titulo,
+        dados.mensagem,
+        dados.data
+    )
+
+    return {
+        "mensagem": "Notificação atualizada",
+        "notificacao": {
+            "id": notificacao_atualizada.id,
+            "titulo": notificacao_atualizada.titulo,
+            "mensagem": notificacao_atualizada.mensagem,
+            "data": notificacao_atualizada.data
+        }
     }

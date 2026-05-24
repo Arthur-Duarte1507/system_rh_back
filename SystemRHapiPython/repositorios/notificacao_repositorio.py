@@ -53,3 +53,23 @@ def deletar_notificacao(
     banco.commit()
 
     return True
+
+def atualizar_notificacao(
+    banco: Session,
+    notificacao: Notificacao,
+    funcionario_id: int,
+    titulo: str,
+    mensagem: str,
+    data
+):
+
+    notificacao.funcionario_id = funcionario_id
+    notificacao.titulo = titulo
+    notificacao.mensagem = mensagem
+    notificacao.data = data
+
+    banco.commit()
+
+    banco.refresh(notificacao)
+
+    return notificacao

@@ -55,6 +55,15 @@ def dashboard(
                 "data": notificacao.data
             })
 
+        if notificacao.funcionario_id == 0:
+
+            comunicados.append({
+                "id": notificacao.id,
+                "titulo": notificacao.titulo,
+                "mensagem": notificacao.mensagem,
+                "data": notificacao.data
+            })
+
     return {
         "funcionario": {
             "id": funcionario.id,
