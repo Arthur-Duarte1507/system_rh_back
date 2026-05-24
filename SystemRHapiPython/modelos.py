@@ -69,4 +69,4 @@ class Notificacao(Base):
     funcionario_id = Column(Integer, ForeignKey("funcionarios.id"))
     titulo = Column(String, nullable=False)
     mensagem = Column(Text, nullable=False)
-    data = Column(Text, nullable=True)
+    data = Column(Text, nullable=True)  
