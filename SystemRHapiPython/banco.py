@@ -1,18 +1,17 @@
+import os
+from pathlib import Path
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
-from dotenv import load_dotenv
-import os
 
-load_dotenv()
+dotenv_path = Path(__file__).resolve().parent / ".env"
+load_dotenv(dotenv_path=dotenv_path)
 
-
-DB_PASS = os.getenv("DB_PASS")
-DB_PORT = os.getenv("DB_PORT")
-DB_USER = os.getenv("DB_USER")
-
-print(f"postgresql://{DB_USER}:{DB_PASS}@localhost:{DB_PORT}/rh_api")
-URL_BANCO = f"postgresql://{DB_USER}:{DB_PASS}@localhost:{DB_PORT}/rh_api"
+URL_BANCO = os.getenv("URL_BANCO") or os.getenv("DATABASE_URL")
+if not URL_BANCO:
+    raise RuntimeError("Defina URL_BANCO (ou DATABASE_URL) no arquivo .env.")
 
 
 engine = create_engine(URL_BANCO)

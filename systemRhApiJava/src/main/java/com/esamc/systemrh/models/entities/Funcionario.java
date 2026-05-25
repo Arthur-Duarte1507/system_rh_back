@@ -27,8 +27,8 @@ public class Funcionario {
     @Column(nullable = false)
     private String aniversario;
 
-    @Column(nullable = false, columnDefinition = "VARCHAR(50) DEFAULT 'nao_comecou'")
-    private String estadoTrabalho;
+    @Column(name = "estado_trabalho", nullable = false, length = 50)
+    private String estadoTrabalho = "nao_comecou";
 
     public Integer getId() {
         return id;

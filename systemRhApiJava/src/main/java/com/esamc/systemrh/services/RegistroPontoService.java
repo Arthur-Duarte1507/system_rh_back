@@ -6,6 +6,7 @@ import com.esamc.systemrh.models.repositories.FuncionarioRepository;
 import com.esamc.systemrh.models.repositories.RegistroPontoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -66,6 +67,7 @@ public class RegistroPontoService {
                 );
     }
 
+    @Transactional
     public void deletarRegistrosPorData(
             LocalDate data
     ) {
