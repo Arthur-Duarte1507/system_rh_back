@@ -8,7 +8,8 @@ from repositorios.funcionario_repositorio import (
     listar_funcionarios,
     criar_funcionario,
     alterar_funcionario,
-    deletar_funcionario
+    deletar_funcionario,
+    formatar_funcionario
 )
 
 from esquemas import (
@@ -30,21 +31,13 @@ def buscar_funcionarios(
 
     funcionarios = listar_funcionarios(banco)
 
-    lista = []
-
-    for funcionario in funcionarios:
-
-        lista.append({
-            "id": funcionario.id,
-            "nome": funcionario.nome,
-            "email": funcionario.email,
-            "cargo": funcionario.cargo,
-            "tempo_casa": funcionario.tempo_casa,
-            "aniversario": funcionario.aniversario,
-            "estado_trabalho": funcionario.estado_trabalho
-        })
-
-    return lista
+    return [
+        formatar_funcionario(
+            banco,
+            funcionario
+        )
+        for funcionario in funcionarios
+    ]
 
 
 @router.get("/{id}")
@@ -64,15 +57,10 @@ def buscar_funcionario(
             "erro": "Funcionário não encontrado"
         }
 
-    return {
-        "id": funcionario.id,
-        "nome": funcionario.nome,
-        "email": funcionario.email,
-        "cargo": funcionario.cargo,
-        "tempo_casa": funcionario.tempo_casa,
-        "aniversario": funcionario.aniversario,
-        "estado_trabalho": funcionario.estado_trabalho
-    }
+    return formatar_funcionario(
+        banco,
+        funcionario
+    )
 
 
 @router.post("")
@@ -89,18 +77,16 @@ def cadastrar_funcionario(
         dados.cargo,
         dados.tempo_casa,
         dados.aniversario,
-        dados.estado_trabalho
+        dados.estado_trabalho,
+        dados.data_admissao
     )
 
     return {
         "mensagem": "Funcionário criado com sucesso",
-        "funcionario": {
-            "id": funcionario.id,
-            "nome": funcionario.nome,
-            "email": funcionario.email,
-            "cargo": funcionario.cargo,
-            "estado_trabalho": funcionario.estado_trabalho
-        }
+        "funcionario": formatar_funcionario(
+            banco,
+            funcionario
+        )
     }
 
 
@@ -130,20 +116,16 @@ def atualizar_funcionario(
         dados.cargo,
         dados.tempo_casa,
         dados.aniversario,
-        dados.estado_trabalho
+        dados.estado_trabalho,
+        dados.data_admissao
     )
 
     return {
         "mensagem": "Funcionário atualizado",
-        "funcionario": {
-            "id": funcionario_atualizado.id,
-            "nome": funcionario_atualizado.nome,
-            "email": funcionario_atualizado.email,
-            "cargo": funcionario_atualizado.cargo,
-            "tempo_casa": funcionario_atualizado.tempo_casa,
-            "aniversario": funcionario_atualizado.aniversario,
-            "estado_trabalho": funcionario_atualizado.estado_trabalho
-        }
+        "funcionario": formatar_funcionario(
+            banco,
+            funcionario_atualizado
+        )
     }
 
 

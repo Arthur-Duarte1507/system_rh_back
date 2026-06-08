@@ -10,7 +10,8 @@ class FuncionarioResposta(BaseModel):
     id: int
     nome: str
     email: str
-    cargo: str
+    cargo: str | None
+    data_admissao: str | None
     tempo_casa: str | None
     aniversario: str | None
     estado_trabalho: str
@@ -46,7 +47,8 @@ class CriarFuncionarioRequisicao(BaseModel):
     email: str
     senha: str
     cargo: str
-    tempo_casa: str
+    data_admissao: str | None = None
+    tempo_casa: str | None = None
     aniversario: str
     estado_trabalho: str | None = None
 
@@ -55,9 +57,10 @@ class AlterarFuncionarioRequisicao(BaseModel):
     nome: str
     email: str
     cargo: str
+    data_admissao: str | None = None
     tempo_casa: str | None = None
     aniversario: str | None = None
-    estado_trabalho: str
+    estado_trabalho: str | None = None
 
 
 class ConversaRequisicao(BaseModel):

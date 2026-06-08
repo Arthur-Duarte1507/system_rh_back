@@ -1,10 +1,15 @@
 package com.esamc.systemrh.services;
 
+import com.esamc.systemrh.models.entities.Cargo;
 import com.esamc.systemrh.models.entities.Funcionario;
+import com.esamc.systemrh.models.repositories.CargoRepository;
 import com.esamc.systemrh.models.repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -12,6 +17,49 @@ public class FuncionarioService {
 
     @Autowired
     FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    CargoRepository cargoRepository;
+
+    private Cargo buscarOuCriarCargo(String nome) {
+        String nomeCargo =
+                nome == null || nome.trim().isEmpty()
+                        ? "Funcionario"
+                        : nome.trim();
+
+        Cargo cargo = cargoRepository.findByNome(nomeCargo);
+
+        if (cargo != null) {
+            return cargo;
+        }
+
+        cargo = new Cargo();
+        cargo.setNome(nomeCargo);
+
+        return cargoRepository.save(cargo);
+    }
+
+    private LocalDate normalizarData(String valor) {
+        if (valor == null || valor.trim().isEmpty()) {
+            return null;
+        }
+
+        String data = valor.trim();
+
+        DateTimeFormatter[] formatos = new DateTimeFormatter[]{
+                DateTimeFormatter.ISO_LOCAL_DATE,
+                DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        };
+
+        for (DateTimeFormatter formato : formatos) {
+            try {
+                return LocalDate.parse(data, formato);
+            } catch (DateTimeParseException ignored) {
+            }
+        }
+
+        return null;
+    }
 
     // BUSCAR FUNCIONÁRIO POR ID
     public Funcionario buscarFuncionarioPorId(
@@ -45,15 +93,9 @@ public class FuncionarioService {
         funcionario.setNome(nome);
         funcionario.setEmail(email);
         funcionario.setSenha(senha);
-        funcionario.setCargo(cargo);
-        funcionario.setTempo_casa(tempoCasa);
+        funcionario.setCargo(buscarOuCriarCargo(cargo));
         funcionario.setAniversario(aniversario);
-
-        funcionario.setEstadoTrabalho(
-                estadoTrabalho != null
-                        ? estadoTrabalho
-                        : "nao_comecou"
-        );
+        funcionario.setDataAdmissao(normalizarData(tempoCasa));
 
         return funcionarioRepository.save(funcionario);
     }
@@ -79,10 +121,9 @@ public class FuncionarioService {
 
         funcionario.setNome(nome);
         funcionario.setEmail(email);
-        funcionario.setCargo(cargo);
-        funcionario.setTempo_casa(tempoCasa);
+        funcionario.setCargo(buscarOuCriarCargo(cargo));
         funcionario.setAniversario(aniversario);
-        funcionario.setEstadoTrabalho(estadoTrabalho);
+        funcionario.setDataAdmissao(normalizarData(tempoCasa));
 
         return funcionarioRepository.save(funcionario);
     }

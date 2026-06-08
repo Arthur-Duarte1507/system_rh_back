@@ -1,5 +1,9 @@
 package com.esamc.systemrh.models.entities;
+
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "notificacoes")
@@ -9,17 +13,32 @@ public class Notificacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "funcionario_id")
-    private Funcionario funcionario;
-
     @Column(nullable = false)
     private String titulo;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String mensagem;
 
-    private Boolean lida = false;
+    private String data;
+
+    @OneToMany(
+            mappedBy = "notificacao",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private List<NotificacaoDestinatario> destinatarios = new ArrayList<>();
+
+    public void adicionarDestinatario(
+            Funcionario funcionario
+    ) {
+        NotificacaoDestinatario destinatario = new NotificacaoDestinatario();
+        destinatario.setNotificacao(this);
+        destinatario.setFuncionario(funcionario);
+        destinatario.setLida(false);
+
+        destinatarios.add(destinatario);
+    }
 
     public Integer getId() {
         return id;
@@ -27,14 +46,6 @@ public class Notificacao {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
     }
 
     public String getTitulo() {
@@ -53,11 +64,19 @@ public class Notificacao {
         this.mensagem = mensagem;
     }
 
-    public Boolean getLida() {
-        return lida;
+    public String getData() {
+        return data;
     }
 
-    public void setLida(Boolean lida) {
-        this.lida = lida;
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public List<NotificacaoDestinatario> getDestinatarios() {
+        return destinatarios;
+    }
+
+    public void setDestinatarios(List<NotificacaoDestinatario> destinatarios) {
+        this.destinatarios = destinatarios;
     }
 }

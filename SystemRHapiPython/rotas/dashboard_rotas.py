@@ -3,11 +3,17 @@ from sqlalchemy.orm import Session
 
 from banco import pegar_banco
 
-from repositorios.funcionario_repositorio import buscar_funcionario_por_id
+from repositorios.funcionario_repositorio import (
+    buscar_funcionario_por_id,
+    formatar_funcionario
+)
 
 from repositorios.banco_horas_repositorio import calcular_banco_horas
 
-from repositorios.notificacao_repositorio import listar_notificacoes
+from repositorios.notificacao_repositorio import (
+    formatar_notificacao,
+    listar_notificacoes_funcionario
+)
 
 
 router = APIRouter(
@@ -38,42 +44,21 @@ def dashboard(
         funcionario_id
     )
 
-    notificacoes = listar_notificacoes(
-        banco
+    notificacoes = listar_notificacoes_funcionario(
+        banco,
+        funcionario_id
     )
 
-    comunicados = []
-
-    for notificacao in notificacoes:
-
-        if notificacao.funcionario_id == funcionario_id:
-
-            comunicados.append({
-                "id": notificacao.id,
-                "titulo": notificacao.titulo,
-                "mensagem": notificacao.mensagem,
-                "data": notificacao.data
-            })
-
-        if notificacao.funcionario_id == 0:
-
-            comunicados.append({
-                "id": notificacao.id,
-                "titulo": notificacao.titulo,
-                "mensagem": notificacao.mensagem,
-                "data": notificacao.data
-            })
+    comunicados = [
+        formatar_notificacao(notificacao)
+        for notificacao in notificacoes
+    ]
 
     return {
-        "funcionario": {
-            "id": funcionario.id,
-            "nome": funcionario.nome,
-            "email": funcionario.email,
-            "cargo": funcionario.cargo,
-            "tempo_casa": funcionario.tempo_casa,
-            "aniversario": funcionario.aniversario,
-            "estado_trabalho": funcionario.estado_trabalho
-        },
+        "funcionario": formatar_funcionario(
+            banco,
+            funcionario
+        ),
 
         "banco_horas": banco_horas,
 

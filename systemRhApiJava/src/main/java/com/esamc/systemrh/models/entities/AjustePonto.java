@@ -1,7 +1,11 @@
 package com.esamc.systemrh.models.entities;
+
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 @Entity
 @Table(name = "ajustes_ponto")
@@ -24,17 +28,40 @@ public class AjustePonto {
     @Column(name = "data_ajustada")
     private Timestamp dataAjuste;
 
-    @Column(name = "hora_inicial")
-    private String horaInicial;
+    @OneToMany(
+            mappedBy = "ajustePonto",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER
+    )
+    private List<AjustePontoHorario> horarios = new ArrayList<>();
 
-    @Column(name = "intervalo_inicial")
-    private String intervaloInicial;
+    public void adicionarHorario(
+            String tipo,
+            String horario,
+            Integer ordem
+    ) {
+        if (horario == null || horario.trim().isEmpty()) {
+            return;
+        }
 
-    @Column(name = "intervalo_final")
-    private String intervaloFinal;
+        AjustePontoHorario item = new AjustePontoHorario();
+        item.setAjustePonto(this);
+        item.setTipo(tipo);
+        item.setHorario(horario);
+        item.setOrdem(ordem);
 
-    @Column(name = "hora_final")
-    private String horaFinal;
+        horarios.add(item);
+    }
+
+    public String buscarHorario(String tipo) {
+        return horarios.stream()
+                .filter(horario -> tipo.equals(horario.getTipo()))
+                .sorted(Comparator.comparing(AjustePontoHorario::getOrdem))
+                .map(AjustePontoHorario::getHorario)
+                .findFirst()
+                .orElse(null);
+    }
 
     public Timestamp getDataAjuste() {
         return dataAjuste;
@@ -44,36 +71,12 @@ public class AjustePonto {
         this.dataAjuste = dataAjuste;
     }
 
-    public String getHoraInicial() {
-        return horaInicial;
+    public List<AjustePontoHorario> getHorarios() {
+        return horarios;
     }
 
-    public void setHoraInicial(String horaInicial) {
-        this.horaInicial = horaInicial;
-    }
-
-    public String getIntervaloInicial() {
-        return intervaloInicial;
-    }
-
-    public void setIntervaloInicial(String intervaloInicial) {
-        this.intervaloInicial = intervaloInicial;
-    }
-
-    public String getIntervaloFinal() {
-        return intervaloFinal;
-    }
-
-    public void setIntervaloFinal(String intervaloFinal) {
-        this.intervaloFinal = intervaloFinal;
-    }
-
-    public String getHoraFinal() {
-        return horaFinal;
-    }
-
-    public void setHoraFinal(String horaFinal) {
-        this.horaFinal = horaFinal;
+    public void setHorarios(List<AjustePontoHorario> horarios) {
+        this.horarios = horarios;
     }
 
     public Integer getId() {

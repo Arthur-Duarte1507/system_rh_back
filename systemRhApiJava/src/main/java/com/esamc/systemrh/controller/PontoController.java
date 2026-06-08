@@ -63,7 +63,7 @@ public class PontoController {
                 LocalDateTime.of(
                         data,
                         parseHorario(
-                                ajustePonto.getHoraInicial(),
+                                ajustePonto.buscarHorario("hora_inicial"),
                                 "horaInicial"
                         )
                 );
@@ -72,7 +72,7 @@ public class PontoController {
                 LocalDateTime.of(
                         data,
                         parseHorario(
-                                ajustePonto.getIntervaloInicial(),
+                                ajustePonto.buscarHorario("intervalo_inicial"),
                                 "intervaloInicial"
                         )
                 );
@@ -81,7 +81,7 @@ public class PontoController {
                 LocalDateTime.of(
                         data,
                         parseHorario(
-                                ajustePonto.getIntervaloFinal(),
+                                ajustePonto.buscarHorario("intervalo_final"),
                                 "intervaloFinal"
                         )
                 );
@@ -90,7 +90,7 @@ public class PontoController {
                 LocalDateTime.of(
                         data,
                         parseHorario(
-                                ajustePonto.getHoraFinal(),
+                                ajustePonto.buscarHorario("hora_final"),
                                 "horaFinal"
                         )
                 );

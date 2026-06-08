@@ -6,7 +6,8 @@ from banco import pegar_banco
 from esquemas import LoginRequisicao
 
 from repositorios.funcionario_repositorio import (
-    buscar_funcionario_por_email
+    buscar_funcionario_por_email,
+    formatar_funcionario
 )
 
 
@@ -39,14 +40,19 @@ def login(
             "erro": "Senha inválida"
         }
 
+    usuario = formatar_funcionario(
+        banco,
+        funcionario
+    )
+
     return {
         "mensagem": "Login realizado com sucesso",
 
         "usuario": {
-            "id": funcionario.id,
-            "nome": funcionario.nome,
-            "email": funcionario.email,
-            "cargo": funcionario.cargo
+            "id": usuario["id"],
+            "nome": usuario["nome"],
+            "email": usuario["email"],
+            "cargo": usuario["cargo"]
         }
     }
 

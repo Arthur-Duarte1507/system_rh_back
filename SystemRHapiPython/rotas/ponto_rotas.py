@@ -9,11 +9,8 @@ from esquemas import (
     BaterPontoRequisicao
 )
 
-from repositorios import funcionario_repositorio
-
 from modelos import (
-    RegistroPonto,
-    Funcionario
+    RegistroPonto
 )
 
 from repositorios.ponto_repositorio import (
@@ -21,6 +18,7 @@ from repositorios.ponto_repositorio import (
     listar_pontos_funcionario,
     buscar_ultimo_ponto
 )
+from repositorios.funcionario_repositorio import obter_estado_trabalho
 
 
 router = APIRouter(
@@ -52,24 +50,6 @@ def bater_ponto(
         banco,
         dados.funcionario_id,
         tipo_ponto
-    )
-
-    vfuncionario=funcionario_repositorio.buscar_funcionario_por_id(
-            banco=banco,
-            funcionario_id=dados.funcionario_id
-        )
-    
-    vestado_trabalho = "Trabalhando" if tipo_ponto == "Entrada" else "Ausente"
-    
-    funcionario_repositorio.alterar_funcionario(
-        banco=banco,
-        funcionario=vfuncionario,
-        nome=vfuncionario.nome,
-        email=vfuncionario.email,
-        cargo=vfuncionario.cargo,
-        tempo_casa=vfuncionario.tempo_casa,
-        aniversario=vfuncionario.aniversario,
-        estado_trabalho= vestado_trabalho
     )
 
     return {
@@ -113,43 +93,11 @@ def status_ponto(
     banco: Session = Depends(pegar_banco)
 ):
 
-    ultimo_ponto = buscar_ultimo_ponto(
-        banco,
-        funcionario_id
-    )
-
-    if ultimo_ponto is None:
-
-        return {
-            "estado": "nao comecou"
-        }
-
-    if ultimo_ponto.tipo == "entrada":
-
-        return {
-            "estado": "Trabalhando"
-        }
-
-    if ultimo_ponto.tipo == "saida":
-
-        return {
-            "estado": "Saida"
-        }
-
-    if ultimo_ponto.tipo == "falta":
-
-        return {
-            "estado": "Falta"
-        }
-
-    if ultimo_ponto.tipo == "ferias":
-
-        return {
-            "estado": "Ferias"
-        }
-
     return {
-        "estado": ultimo_ponto.tipo
+        "estado": obter_estado_trabalho(
+            banco,
+            funcionario_id
+        )
     }
 
 

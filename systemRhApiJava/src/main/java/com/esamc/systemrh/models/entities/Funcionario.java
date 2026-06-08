@@ -1,5 +1,8 @@
 package com.esamc.systemrh.models.entities;
+
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "funcionarios")
@@ -18,17 +21,15 @@ public class Funcionario {
     @Column(nullable = false)
     private String senha;
 
-    @Column(nullable = false)
-    private String cargo;
-
-    @Column(nullable = false)
-    private String tempo_casa;
+    @ManyToOne
+    @JoinColumn(name = "cargo_id", nullable = false)
+    private Cargo cargo;
 
     @Column(nullable = false)
     private String aniversario;
 
-    @Column(name = "estado_trabalho", nullable = false, length = 50)
-    private String estadoTrabalho = "nao_comecou";
+    @Column(name = "data_admissao")
+    private LocalDate dataAdmissao;
 
     public Integer getId() {
         return id;
@@ -62,20 +63,12 @@ public class Funcionario {
         this.senha = senha;
     }
 
-    public String getCargo() {
+    public Cargo getCargo() {
         return cargo;
     }
 
-    public void setCargo(String cargo) {
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
-    }
-
-    public String getTempo_casa() {
-        return tempo_casa;
-    }
-
-    public void setTempo_casa(String tempo_casa) {
-        this.tempo_casa = tempo_casa;
     }
 
     public String getAniversario() {
@@ -86,11 +79,11 @@ public class Funcionario {
         this.aniversario = aniversario;
     }
 
-    public String getEstadoTrabalho() {
-        return estadoTrabalho;
+    public LocalDate getDataAdmissao() {
+        return dataAdmissao;
     }
 
-    public void setEstadoTrabalho(String estadoTrabalho) {
-        this.estadoTrabalho = estadoTrabalho;
+    public void setDataAdmissao(LocalDate dataAdmissao) {
+        this.dataAdmissao = dataAdmissao;
     }
 }

@@ -49,20 +49,28 @@ public class AjustePontoService {
                 )
         );
 
-        ajuste.setHoraInicial(
-                request.getHoraInicial()
+        ajuste.adicionarHorario(
+                "hora_inicial",
+                request.getHoraInicial(),
+                1
         );
 
-        ajuste.setIntervaloInicial(
-                request.getIntervaloInicial()
+        ajuste.adicionarHorario(
+                "intervalo_inicial",
+                request.getIntervaloInicial(),
+                2
         );
 
-        ajuste.setIntervaloFinal(
-                request.getIntervaloFinal()
+        ajuste.adicionarHorario(
+                "intervalo_final",
+                request.getIntervaloFinal(),
+                3
         );
 
-        ajuste.setHoraFinal(
-                request.getHoraFinal()
+        ajuste.adicionarHorario(
+                "hora_final",
+                request.getHoraFinal(),
+                4
         );
 
         return ajustePontoRepository.save(ajuste);

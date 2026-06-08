@@ -30,7 +30,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 export DB_URL='jdbc:postgresql://localhost:5432/rh_api'
 export DB_USER='postgres'
 export DB_PASS='123456'
-export SERVER_PORT='8081'   # opcional
+export SERVER_PORT='8081'  
 
 sh mvnw spring-boot:run
 ```

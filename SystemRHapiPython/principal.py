@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import text
 
 from banco import Base, engine
+from migracoes import aplicar_migracoes
 
 from rotas.autenticacao_rotas import router as autenticacao_router
 from rotas.dashboard_rotas import router as dashboard_router
@@ -16,22 +16,7 @@ from rotas.ajuste_ponto_rotas import router as ajuste_ponto_router
 from rotas.banco_horas_rotas import router as banco_horas_router
 
 Base.metadata.create_all(bind=engine)
-
-
-def aplicar_migracoes_basicas():
-
-    with engine.begin() as conexao:
-        conexao.execute(
-            text(
-                """
-                ALTER TABLE notificacoes
-                ADD COLUMN IF NOT EXISTS data TEXT
-                """
-            )
-        )
-
-
-aplicar_migracoes_basicas()
+aplicar_migracoes()
 
 
 app = FastAPI(

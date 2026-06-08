@@ -26,18 +26,20 @@ public class NotificacaoService {
     ) {
 
         Funcionario funcionario =
-                funcionarioRepository.findById(funcionarioId)
-                        .orElse(null);
+                funcionarioId == null || funcionarioId == 0
+                        ? null
+                        : funcionarioRepository.findById(funcionarioId)
+                                .orElse(null);
 
-        if (funcionario == null) {
+        if (funcionarioId != null && funcionarioId != 0 && funcionario == null) {
             return null;
         }
 
         Notificacao notificacao = new Notificacao();
 
-        notificacao.setFuncionario(funcionario);
         notificacao.setTitulo(titulo);
         notificacao.setMensagem(mensagem);
+        notificacao.adicionarDestinatario(funcionario);
 
         return notificacaoRepository.save(notificacao);
     }
@@ -63,7 +65,9 @@ public class NotificacaoService {
             Notificacao notificacao
     ) {
 
-        notificacao.setLida(true);
+        notificacao.getDestinatarios().forEach(
+                destinatario -> destinatario.setLida(true)
+        );
 
         return notificacaoRepository.save(notificacao);
     }

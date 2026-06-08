@@ -10,7 +10,8 @@ from repositorios.notificacao_repositorio import (
     listar_notificacoes,
     buscar_notificacao_por_id,
     deletar_notificacao,
-    atualizar_notificacao
+    atualizar_notificacao,
+    formatar_notificacao
 )
 
 
@@ -36,12 +37,7 @@ def nova_notificacao(
 
     return {
         "mensagem": "Notificação criada",
-        "notificacao": {
-            "id": notificacao.id,
-            "titulo": notificacao.titulo,
-            "mensagem": notificacao.mensagem,
-            "data": notificacao.data
-        }
+        "notificacao": formatar_notificacao(notificacao)
     }
 
 
@@ -54,19 +50,10 @@ def buscar_notificacoes(
         banco
     )
 
-    lista = []
-
-    for notificacao in notificacoes:
-
-        lista.append({
-            "id": notificacao.id,
-            "funcionario_id": notificacao.funcionario_id,
-            "titulo": notificacao.titulo,
-            "mensagem": notificacao.mensagem,
-            "data": notificacao.data
-        })
-
-    return lista
+    return [
+        formatar_notificacao(notificacao)
+        for notificacao in notificacoes
+    ]
 
 
 @router.delete("/{id}")
@@ -124,10 +111,5 @@ def atualizar_notificacao_endpoint(
 
     return {
         "mensagem": "Notificação atualizada",
-        "notificacao": {
-            "id": notificacao_atualizada.id,
-            "titulo": notificacao_atualizada.titulo,
-            "mensagem": notificacao_atualizada.mensagem,
-            "data": notificacao_atualizada.data
-        }
+        "notificacao": formatar_notificacao(notificacao_atualizada)
     }
